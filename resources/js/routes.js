@@ -13,7 +13,8 @@ export default [
         },
         name: 'Home',
         meta: {
-            auth: true
+            auth: true,
+            sidebar: false
         },
     },
     {
@@ -23,7 +24,8 @@ export default [
         },
         name: 'Login',
         meta: {
-            auth: false
+            auth: false,
+            sidebar: false
         },
     },
     {
@@ -33,7 +35,8 @@ export default [
         },
         name: 'Register',
         meta: {
-            auth: false
+            auth: false,
+            sidebar: false
         },
     },
     {
@@ -44,7 +47,20 @@ export default [
         },
         name: 'Profile',
         meta: {
-            auth: true
+            auth: true,
+            sidebar: false
         },
     },
+    {
+        path: '/duties',
+        components: {
+            default: Profile,
+            LeftSidebar,
+        },
+        name: 'Duties',
+        meta: {
+            auth: true,
+            sidebar: true
+        },
+    }
 ];
