@@ -12,11 +12,16 @@ const props = defineProps({
         type: String,
         required: false, // Adjust as needed
     },
+    sidebar: {
+        type: String,
+        required: false, // Adjust as needed
+        default: '',
+    }
 });
 </script>
 
 <template>
-    <li class="nav-item">
-        <a class="nav-link {{ props.active }}" aria-current="page" :href=" props.href ">{{ props.name }}</a>
+    <li :class="'nav-item ' + props.sidebar">
+        <a :class="'nav-link' + props.active" aria-current="page" :href=" props.href ">{{ props.name }}</a>
     </li>
 </template>

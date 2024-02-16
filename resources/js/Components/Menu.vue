@@ -13,10 +13,11 @@
             default: false,
         }
     });
+    const sidebarClass = 'w-100';
 </script>
 
 <template>
-    <div class="flex w-100 nav-justified" v-if="!sidebar">
+    <div class="flex w-100 nav-justified" v-if="!props.sidebar">
         <ul class="nav">
             <MenuLink
                 v-for="route in props.routes"
@@ -28,7 +29,7 @@
             <Logout v-if="this.$store.state.isLoggedIn" />
         </ul>
     </div>
-    <div class="flex flex-column" v-if="sidebar">
+    <div class="flex flex-column" v-if="props.sidebar">
         <ul class="nav">
             <MenuLink
                 v-for="route in props.routes"
@@ -36,6 +37,7 @@
                 :name="route.name"
                 :active="route.path === this.$route.path ? 'active' : ''"
                 :hidden="!route.meta.sidebar"
+                :sidebar="sidebarClass"
             />
         </ul>
     </div>
