@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,6 +15,12 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+Route::post('/login', [AuthController::class, 'auth'])->name('login');
+Route::post('/register', [AuthController::class, 'store'])->name('register');
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+Route::put('/users/{user}', [UserController::class, 'update'])->name('users.update');
+
+//To prevent duplicating blank routes for vue.js, we can use this wildcard route
+Route::get('/{any?}', function () {
+    return view('layouts.main');
 });
