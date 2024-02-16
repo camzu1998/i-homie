@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="col-8">
         <h1>Login</h1>
         <form @submit.prevent="onSubmit">
             <div>

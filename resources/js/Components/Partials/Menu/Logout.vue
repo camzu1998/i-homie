@@ -12,7 +12,7 @@ export default {
 
                     this.$store.commit('removeUser');
                     this.$store.dispatch('persist');
-                    this.$router.push('/');
+                    this.$router.push('/login');
                 })
                 .catch(error => {
                     console.error(error);

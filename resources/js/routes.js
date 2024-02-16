@@ -1,19 +1,26 @@
 import Home from "./Components/Home.vue";
 import Register from "./Components/Auth/Register.vue";
 import Profile from "./Components/User/Profile.vue";
+import LeftSidebar from "./Components/Partials/Menu/LeftSidebar.vue";
+import LoginForm from "./Components/Auth/LoginForm.vue";
 
 export default [
     {
         path: '/',
-        component: Home,
+        components: {
+            default: Home,
+            LeftSidebar,
+        },
         name: 'Home',
         meta: {
             auth: true
         },
     },
     {
-        path: '/',
-        component: Home,
+        path: '/login',
+        components: {
+            default: LoginForm,
+        },
         name: 'Login',
         meta: {
             auth: false
@@ -21,7 +28,9 @@ export default [
     },
     {
         path: '/register',
-        component: Register,
+        components: {
+            default: Register,
+        },
         name: 'Register',
         meta: {
             auth: false
@@ -29,7 +38,10 @@ export default [
     },
     {
         path: '/profile',
-        component: Profile,
+        components: {
+            default: Profile,
+            LeftSidebar,
+        },
         name: 'Profile',
         meta: {
             auth: true

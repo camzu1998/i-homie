@@ -3,7 +3,6 @@
     import Logout from "./Partials/Menu/Logout.vue";
 
     const props = defineProps(['routes']);
-    console.log(props.routes)
 </script>
 
 <template>
