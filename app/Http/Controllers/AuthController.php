@@ -2,13 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Events\UserLoggedIn;
 use App\Http\Requests\LoginRequest;
+use App\Http\Requests\RegisterRequest;
 use App\Models\User;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Str;
 
 class AuthController extends Controller
 {
@@ -22,20 +20,15 @@ class AuthController extends Controller
             //Todo: Process api_token
 //            $user->api_token = Str::random(60);
 //            $user->save();
-            event(new UserLoggedIn($user));
             return response()->json(["user" => $user]);
         }
 
         return response()->json(['error' => 'Invalid credentials'], 401);
     }
 
-    public function store(Request $request)
+    public function store(RegisterRequest $request)
     {
-        $validated = $request->validate([
-            'name' => 'required',
-            'email' => 'required|email',
-            'password' => 'required'
-        ]);
+        $validated = $request->validated();
         $validated['password'] = Hash::make($validated['password']);
         User::create($validated);
         return response()->json(["status" => "success"]);

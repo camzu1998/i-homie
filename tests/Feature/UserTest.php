@@ -42,7 +42,8 @@ class UserTest extends TestCase
         $request = $this->post('/register', [
             'name' => 'register test',
             'email' => 'register@test.com',
-            'password' => 'password'
+            'password' => 'password',
+            'password_confirmation' => 'password'
         ]);
         $request->assertStatus(200)->assertJsonFragment(['status' => 'success']);
         $this->assertDatabaseHas('users', ['email' => 'register@test.com']);

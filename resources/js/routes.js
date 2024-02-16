@@ -60,7 +60,60 @@ export default [
         name: 'Duties',
         meta: {
             auth: true,
-            sidebar: true
+            sidebar: true,
+            icon: 'fa-regular fa-clipboard'
         },
-    }
+    },
+    {
+        path: '/rooms',
+        components: {
+            default: Profile,
+            LeftSidebar,
+        },
+        name: 'Rooms',
+        meta: {
+            auth: true,
+            sidebar: true,
+            icon: 'fa-solid fa-kaaba'
+        },
+    },
+    {
+        path: '/fridge',
+        components: {
+            default: Profile,
+            LeftSidebar,
+        },
+        name: 'Fridge',
+        meta: {
+            auth: true,
+            sidebar: true,
+            icon: 'fa-solid fa-carrot'
+        },
+    },
+    {
+        path: '/entries',
+        components: {
+            default: Profile,
+            LeftSidebar,
+        },
+        name: 'Entries',
+        meta: {
+            auth: true,
+            sidebar: true,
+            icon: 'fa-regular fa-calendar-days'
+        },
+    },
+    {
+        path: '/house',
+        components: {
+            default: Profile,
+            LeftSidebar,
+        },
+        name: 'House',
+        meta: {
+            auth: true,
+            sidebar: true,
+            icon: 'fa-solid fa-house'
+        },
+    },
 ];

@@ -1,16 +1,16 @@
 <template>
-    <div class="col-8">
-        <h1>Login</h1>
-        <form @submit.prevent="onSubmit">
-            <div>
-                <label for="email">Email</label>
-                <input type="email" id="email" v-model="email">
+    <div class="col-8 card">
+        <form @submit.prevent="onSubmit" class="card-body">
+            <h1 class="card-title">Login</h1>
+            <div class="mb-3">
+                <label for="email" class="form-label">Email</label>
+                <input type="email" id="email" v-model="email" class="form-control">
             </div>
-            <div>
-                <label for="password">Hasło</label>
-                <input type="password" id="password" v-model="password">
+            <div class="mb-3">
+                <label for="password" class="form-label">Hasło</label>
+                <input type="password" id="password" v-model="password" class="form-control">
             </div>
-            <button type="submit">Zaloguj</button>
+            <button type="submit" class="btn btn-outline-primary">Zaloguj</button>
         </form>
     </div>
 </template>

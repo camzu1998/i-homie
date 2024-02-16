@@ -38,6 +38,7 @@
                 :active="route.path === this.$route.path ? 'active' : ''"
                 :hidden="!route.meta.sidebar"
                 :sidebar="sidebarClass"
+                :icon="route.meta.icon"
             />
         </ul>
     </div>
