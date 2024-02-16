@@ -9,6 +9,8 @@ use Tests\TestCase;
 
 class UserTest extends TestCase
 {
+    use RefreshDatabase;
+
     /**
      * Test user login page and authentication
      * @test
@@ -17,13 +19,13 @@ class UserTest extends TestCase
     {
         $user = User::factory()->create();
         $response = $this->get('/');
-        $response->assertStatus(200)->assertSee('Login');
+        $response->assertStatus(200);// Cannot see because it's rendered by vue.js ->assertSee('Login');
 
         $request = $this->post('/login', [
                 'email' => $user->email,
                 'password' => 'password'
             ]);
-        $request->assertStatus(302);
+        $request->assertStatus(200)->assertJsonFragment(['name' => $user->name]);
         $this->assertAuthenticatedAs($user);
         //Todo: Check remember me
     }
@@ -35,13 +37,14 @@ class UserTest extends TestCase
     public function user_can_register()
     {
         $response = $this->get('/register');
-        $response->assertStatus(200)->assertSee('Register');
+        $response->assertStatus(200);// Cannot see because it's rendered by vue.js ->assertSee('Register');
 
         $request = $this->post('/register', [
+            'name' => 'register test',
             'email' => 'register@test.com',
             'password' => 'password'
         ]);
-        $request->assertStatus(302);
+        $request->assertStatus(200)->assertJsonFragment(['status' => 'success']);
         $this->assertDatabaseHas('users', ['email' => 'register@test.com']);
         //Todo: Check email verification
     }
@@ -55,7 +58,7 @@ class UserTest extends TestCase
         $user = User::factory()->create();
         $this->actingAs($user);
         $response = $this->post('/logout');
-        $response->assertStatus(302);
+        $response->assertStatus(200)->assertJsonFragment(['status' => 'success']);
         $this->assertGuest();
     }
 
@@ -67,13 +70,13 @@ class UserTest extends TestCase
     {
         $user = User::factory()->create();
         $this->actingAs($user);
-        $response = $this->get('/user/edit');
-        $response->assertStatus(200)->assertSee('Edit Profile');
+        $response = $this->get('/profile');
+        $response->assertStatus(200);// Cannot see because it's rendered by vue.js ->assertSee('Edit Profile');
 
-        $request = $this->put('/user/edit', [
+        $request = $this->put(route('users.update', $user), [
             'name' => 'Test User'
         ]);
-        $request->assertStatus(302)->assertSessionHas('success', 'Profile updated successfully');
+        $request->assertStatus(200)->assertJsonFragment(['name' => 'Test User']);
         $this->assertDatabaseHas('users', ['name' => 'Test User']);
     }
 }
