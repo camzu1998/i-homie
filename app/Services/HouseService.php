@@ -28,9 +28,9 @@ class HouseService
         $house->users()->sync($users + [auth()->id()]);
     }
 
-    public function setPickedHouse($houseId): void
+    public function setPickedHouse(House $house): void
     {
-        auth()->user()->picked_house_id = $houseId;
+        auth()->user()->picked_house_id = $house->id;
         auth()->user()->save();
     }
 

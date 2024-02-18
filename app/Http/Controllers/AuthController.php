@@ -30,7 +30,13 @@ class AuthController extends Controller
     {
         $validated = $request->validated();
         $validated['password'] = Hash::make($validated['password']);
-        User::create($validated);
+        $user = User::create($validated);
+        if (!empty($validated['house'])) {
+            $house = $user->ownHouses()->create(['name' => $validated['house']]);
+            $house->users()->attach($user->id);
+            $user->picked_house_id = $house->id;
+            $user->save();
+        }
         return response()->json(["status" => "success"]);
     }
 
