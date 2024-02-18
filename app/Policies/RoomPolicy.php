@@ -4,7 +4,6 @@ namespace App\Policies;
 
 use App\Models\Room;
 use App\Models\User;
-use Illuminate\Auth\Access\Response;
 
 class RoomPolicy
 {
@@ -13,7 +12,7 @@ class RoomPolicy
      */
     public function viewAny(User $user): bool
     {
-        //
+        return false;
     }
 
     /**
@@ -21,7 +20,7 @@ class RoomPolicy
      */
     public function view(User $user, Room $room): bool
     {
-        //
+        return $room->house->users->contains($user);
     }
 
     /**
@@ -29,7 +28,7 @@ class RoomPolicy
      */
     public function create(User $user): bool
     {
-        //
+        return true;
     }
 
     /**
@@ -37,7 +36,7 @@ class RoomPolicy
      */
     public function update(User $user, Room $room): bool
     {
-        //
+        return $room->house->users->contains($user);
     }
 
     /**
@@ -45,22 +44,6 @@ class RoomPolicy
      */
     public function delete(User $user, Room $room): bool
     {
-        //
-    }
-
-    /**
-     * Determine whether the user can restore the model.
-     */
-    public function restore(User $user, Room $room): bool
-    {
-        //
-    }
-
-    /**
-     * Determine whether the user can permanently delete the model.
-     */
-    public function forceDelete(User $user, Room $room): bool
-    {
-        //
+        return $room->house->users->contains($user);
     }
 }

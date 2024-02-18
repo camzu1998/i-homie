@@ -2,8 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreRoomRequest;
-use App\Http\Requests\UpdateRoomRequest;
+use App\Http\Requests\RoomRequest;
 use App\Models\Room;
 
 class RoomController extends Controller
@@ -13,23 +12,20 @@ class RoomController extends Controller
      */
     public function index()
     {
-        //
-    }
+        $rooms = auth()->user()->pickedHouse->rooms;
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+        return response()->json(['rooms' => $rooms]);
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreRoomRequest $request)
+    public function store(RoomRequest $request)
     {
-        //
+        auth()->user()->pickedHouse->rooms()->create($request->validated());
+        $rooms = auth()->user()->pickedHouse->rooms;
+
+        return response()->json(['rooms' => $rooms]);
     }
 
     /**
@@ -37,23 +33,18 @@ class RoomController extends Controller
      */
     public function show(Room $room)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Room $room)
-    {
-        //
+        return response()->json(['room' => $room]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateRoomRequest $request, Room $room)
+    public function update(RoomRequest $request, Room $room)
     {
-        //
+        $room->update($request->validated());
+        $rooms = auth()->user()->pickedHouse->rooms;
+
+        return response()->json(['rooms' => $rooms]);
     }
 
     /**
@@ -61,6 +52,9 @@ class RoomController extends Controller
      */
     public function destroy(Room $room)
     {
-        //
+        $room->delete();
+        $rooms = auth()->user()->pickedHouse->rooms;
+
+        return response()->json(['rooms' => $rooms]);
     }
 }
