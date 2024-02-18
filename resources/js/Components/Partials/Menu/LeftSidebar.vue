@@ -41,7 +41,10 @@ import {BFormSelect} from "bootstrap-vue-next";
 <template>
     <div class="left-sidebar">
         <div class="mb-3">
-            <BFormSelect v-model="pickedHouse" :options="houseOptions" />
+            <div class="form-floating">
+                <BFormSelect v-model="pickedHouse" :options="houseOptions" id="houseSelect"/>
+                <label for="houseSelect">Pick a house</label>
+            </div>
         </div>
         <h1>Sidebar</h1>
         <Menu :routes="routes" :sidebar="true"/>
