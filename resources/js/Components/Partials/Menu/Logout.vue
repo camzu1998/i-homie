@@ -13,6 +13,7 @@ export default {
                 .then(response => {
 
                     this.$store.commit('removeUser');
+                    this.$store.commit('removeHouses');
                     this.$store.dispatch('persist');
                     this.$router.push('/login');
                 })

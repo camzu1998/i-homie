@@ -2,15 +2,48 @@
 
 import routes from "../../../routes.js";
 import Menu from "../../Menu.vue";
+import {BFormSelect} from "bootstrap-vue-next";
+</script>
+
+<script>
+ export default {
+     computed: {
+         houseOptions() {
+             return this.$store.state.house.houses.map(house => ({
+                 value: house.id,
+                 text: house.name
+             }));
+         }
+     },
+     data() {
+         return {
+             pickedHouse: this.$store.state.house.pickedHouse,
+         };
+     },
+     watch: {
+         pickedHouse(newValue, oldValue) {
+             // Kod do wykonania, gdy wartość createHouse się zmieni
+             this.$store.commit('setHouses',
+                 {
+                     houses: this.$store.state.house.houses,
+                     pickedHouse: newValue
+                 }
+             );
+             this.$store.dispatch('persist');
+             //Todo: Add a toast
+             //Todo: Fetch new dutys
+             console.log(`Wartość pickedHouse zmieniła się z ${oldValue} na ${newValue}`);
+         },
+     }
+ };
 </script>
 
 <template>
     <div class="left-sidebar">
+        <div class="mb-3">
+            <BFormSelect v-model="pickedHouse" :options="houseOptions" />
+        </div>
         <h1>Sidebar</h1>
         <Menu :routes="routes" :sidebar="true"/>
     </div>
 </template>
-
-<style scoped>
-
-</style>

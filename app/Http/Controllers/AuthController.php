@@ -20,7 +20,7 @@ class AuthController extends Controller
             //Todo: Process api_token
 //            $user->api_token = Str::random(60);
 //            $user->save();
-            return response()->json(["user" => $user]);
+            return response()->json(["user" => $user, "houses" => $user->houses->load(['owner']), "pickedHouse" => $user->current_house_id]);
         }
 
         return response()->json(['error' => 'Invalid credentials'], 401);
@@ -30,7 +30,13 @@ class AuthController extends Controller
     {
         $validated = $request->validated();
         $validated['password'] = Hash::make($validated['password']);
-        User::create($validated);
+        $user = User::create($validated);
+        if (!empty($validated['house'])) {
+            $house = $user->ownHouses()->create(['name' => $validated['house']]);
+            $house->users()->attach($user->id);
+            $user->picked_house_id = $house->id;
+            $user->save();
+        }
         return response()->json(["status" => "success"]);
     }
 

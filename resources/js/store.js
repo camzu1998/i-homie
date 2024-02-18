@@ -1,12 +1,19 @@
-import { createStore } from 'vuex';
+import { createStore, createLogger } from 'vuex';
 import VuexPersistence from 'vuex-persist'
+import houseStore from './modules/houseStore';
 
 const persist = new VuexPersistence({
     key: 'vuex',
     storage: window.localStorage,
 });
 
+const debug = process.env.NODE_ENV !== 'production';
+
+
 const store = createStore({
+    modules: {
+        house: houseStore
+    },
     state: {
             isLoggedIn: false,
             user: null,
@@ -26,8 +33,10 @@ const store = createStore({
             commit('setUser', user);
         },
     },
+    strict: debug,
     plugins: [
         persist.plugin,
+        createLogger()
     ],
 });
 
