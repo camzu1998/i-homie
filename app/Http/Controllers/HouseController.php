@@ -55,7 +55,7 @@ class HouseController extends Controller
     public function update(HouseRequest $request, House $house)
     {
         $house->update($request->safe()->only('name'));
-        $usersNames = $request->safe()->only('users');
+        $usersNames = $request->safe()->only('users')['users'] ?? [];
         //Attach users to the house
         $this->houseService->syncUsers($house, $usersNames);
 
