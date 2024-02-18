@@ -22,9 +22,8 @@
                     <td>{{ house.name }}</td>
                     <td>{{ house.owner }}</td>
                     <td>
-                        <button class="btn btn-outline-primary" @click="editHouse(house.id)">Edit</button>
-<!--                        <button class="btn btn-outline-primary" @click="onPickHouse(house.id)">Pick</button>-->
-<!--                        <button class="btn btn-outline-primary" @click="onPickHouse(house.id)">Delete</button>-->
+                        <button class="btn btn-outline-primary me-2" @click="editHouse(house.id)"><i class="fa-regular fa-pen-to-square"></i> Edit</button>
+                        <button class="btn btn-outline-danger" @click="deleteHouse(house.id)"><i class="fa-regular fa-trash-can"></i> Delete</button>
                     </td>
                 </tr>
             </tbody>
@@ -77,6 +76,17 @@ export default {
             axios.get('/houses')
                 .then(response => {
                     this.$store.commit('setHouses', response.data);
+                })
+                .catch(error => {
+                    console.error(error);
+                });
+        },
+
+        deleteHouse(id) {
+            axios.delete(`/houses/${id}`)
+                .then(response => {
+                    this.$store.commit('setHouses', response.data);
+                    this.$store.dispatch('persist');
                 })
                 .catch(error => {
                     console.error(error);
