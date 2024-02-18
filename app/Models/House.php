@@ -11,7 +11,10 @@ class House extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name'];
+    protected $fillable = [
+        'name',
+        'owner_id'
+    ];
 
     public function owner(): BelongsTo
     {

@@ -20,7 +20,7 @@ class AuthController extends Controller
             //Todo: Process api_token
 //            $user->api_token = Str::random(60);
 //            $user->save();
-            return response()->json(["user" => $user]);
+            return response()->json(["user" => $user, "houses" => $user->houses->load(['owner']), "pickedHouse" => $user->current_house_id]);
         }
 
         return response()->json(['error' => 'Invalid credentials'], 401);

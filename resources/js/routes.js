@@ -3,6 +3,7 @@ import Register from "./Components/Auth/Register.vue";
 import Profile from "./Components/User/Profile.vue";
 import LeftSidebar from "./Components/Partials/Menu/LeftSidebar.vue";
 import LoginForm from "./Components/Auth/LoginForm.vue";
+import Houses from "./Components/House/Houses.vue";
 
 export default [
     {
@@ -106,7 +107,7 @@ export default [
     {
         path: '/house',
         components: {
-            default: Profile,
+            default: Houses,
             LeftSidebar,
         },
         name: 'House',

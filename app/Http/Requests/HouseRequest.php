@@ -22,11 +22,9 @@ class HouseRequest extends FormRequest
     public function rules(): array
     {
         return [
-            [
                 'name' => ['required', 'string', 'max:60'],
                 'users' => ['sometimes', 'array'],
                 'users.*' => ['string']
-            ]
         ];
     }
 }
