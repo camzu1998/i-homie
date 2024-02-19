@@ -15,7 +15,11 @@ class HouseService
                 'id' => $house->id,
                 'name' => $house->name,
                 'owner' => $house->owner->name,
-                'users' => $house->users->pluck('name')->toArray(),
+                'users' => $house->users->map(function ($user) {
+                    return [
+                        'value' => $user->name,
+                    ];
+                })->toArray(),
             ];
         }
 

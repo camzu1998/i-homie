@@ -32,7 +32,7 @@ class HouseController extends Controller
     {
         $house = auth()->user()->ownHouses()->create($request->safe()->only('name'));
         //Attach users to the house
-        $usersNames = $request->safe()->only('users') ?? [];
+        $usersNames = $request->safe()->only('users')['users'] ?? [];
         $this->houseService->syncUsers($house, $usersNames);
         //Set newly created house as picked house
         //Todo: do this when user has no houses or picked house
@@ -47,7 +47,13 @@ class HouseController extends Controller
      */
     public function show(House $house)
     {
-        return response()->json(["house" => $house->load(['users', 'owner'])]);
+        $users = $house->users->map(function ($user) {
+            return [
+                'value' => $user->name,
+            ];
+        })->toArray();
+
+        return response()->json(["house" => $house->load(['users', 'owner']), "users" => $users]);
     }
 
     /**
