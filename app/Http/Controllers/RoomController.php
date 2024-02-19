@@ -7,6 +7,10 @@ use App\Models\Room;
 
 class RoomController extends Controller
 {
+    public function __construct()
+    {
+        $this->authorizeResource(Room::class, 'room');
+    }
     /**
      * Display a listing of the resource.
      */

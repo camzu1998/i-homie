@@ -12,10 +12,10 @@ class HouseTest extends AuthenticatedTestCase
      */
     public function user_can_create_house(): void
     {
-        $response = $this->get('/houses');
+        $response = $this->get('/api/houses');
         $response->assertStatus(200);
 
-        $response = $this->post('/houses', [
+        $response = $this->post('/api/houses', [
             'name' => 'House Name',
         ]);
 

@@ -14,6 +14,7 @@ class HouseController extends Controller
 
     public function __construct()
     {
+        $this->authorizeResource(House::class, 'house');
         $this->houseService = new HouseService();
     }
     /**

@@ -1,20 +1,27 @@
 <?php
 namespace Tests\Feature\Authenticated;
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
-use Tests\Feature\Authenticated\AuthenticatedTestCase;
-use Tests\TestCase;
+use App\Models\House;
 
 class RoomTest extends AuthenticatedTestCase
 {
+
+    private House $house;
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->house = $this->user->ownHouses()->create(['name' => 'First Name']);
+        $this->house->users()->attach($this->user);
+        $this->user->update(['picked_house_id' => $this->house->id]);
+    }
     /**
      * Test user can fetch rooms
      * @test
      */
     public function user_can_fetch_rooms(): void
     {
-        $response = $this->get('/rooms');
+        $response = $this->get('/api/rooms');
         $response->assertStatus(200);
     }
 
@@ -24,7 +31,7 @@ class RoomTest extends AuthenticatedTestCase
      */
     public function user_can_create_room(): void
     {
-        $response = $this->post('/rooms', [
+        $response = $this->post('/api/rooms', [
             'name' => 'Room Name',
         ]);
         $response->assertStatus(200);
@@ -37,7 +44,7 @@ class RoomTest extends AuthenticatedTestCase
      */
     public function user_can_update_room(): void
     {
-        $room = $this->user->rooms()->create(['name' => 'Room Name']);
+        $room = $this->user->rooms()->create(['name' => 'Room Name', 'house_id' => $this->house->id]);
 
         $response = $this->put(route('rooms.update', $room), [
             'name' => 'Room Test',
@@ -52,7 +59,7 @@ class RoomTest extends AuthenticatedTestCase
      */
     public function user_can_delete_room(): void
     {
-        $room = $this->user->rooms()->create(['name' => 'Room Name']);
+        $room = $this->user->rooms()->create(['name' => 'Room Name', 'house_id' => $this->house->id]);
 
         $response = $this->delete(route('rooms.destroy', $room));
         $response->assertStatus(200);
