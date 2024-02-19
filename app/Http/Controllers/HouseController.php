@@ -3,9 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\HouseRequest;
-use App\Http\Requests\UpdateHouseRequest;
 use App\Models\House;
-use App\Models\User;
 use App\Services\HouseService;
 
 class HouseController extends Controller
@@ -22,7 +20,7 @@ class HouseController extends Controller
      */
     public function index()
     {
-        return response()->json(["houses" => $this->houseService->outputData(auth()->user()->houses), "pickedHouse" => auth()->user()->picked_house_id]);
+        return response()->json(["houses" => $this->houseService->outputData(), "pickedHouse" => auth()->user()->picked_house_id]);
     }
 
     /**
@@ -30,16 +28,9 @@ class HouseController extends Controller
      */
     public function store(HouseRequest $request)
     {
-        $house = auth()->user()->ownHouses()->create($request->safe()->only('name'));
-        //Attach users to the house
-        $usersNames = $request->safe()->only('users')['users'] ?? [];
-        $this->houseService->syncUsers($house, $usersNames);
-        //Set newly created house as picked house
-        //Todo: do this when user has no houses or picked house
-        auth()->user()->picked_house_id = $house->id;
-        auth()->user()->save();
+        $this->houseService = $this->houseService->create($request->safe()->only('name'), $request->safe()->only('users')['users'] ?? []);
 
-        return response()->json(["houses" => $this->houseService->outputData(auth()->user()->houses), "pickedHouse" => auth()->user()->picked_house_id]);
+        return response()->json(["houses" => $this->houseService->outputData(), "pickedHouse" => auth()->user()->picked_house_id]);
     }
 
     /**
@@ -61,12 +52,13 @@ class HouseController extends Controller
      */
     public function update(HouseRequest $request, House $house)
     {
+        $this->houseService->setHouse($house);
         $house->update($request->safe()->only('name'));
-        $usersNames = $request->safe()->only('users')['users'] ?? [];
         //Attach users to the house
-        $this->houseService->syncUsers($house, $usersNames);
+        $usersNames = $request->safe()->only('users')['users'] ?? [];
+        $this->houseService->syncUsers($usersNames);
 
-        return response()->json(["houses" => $this->houseService->outputData(auth()->user()->houses), "pickedHouse" => auth()->user()->picked_house_id]);
+        return response()->json(["houses" => $this->houseService->outputData(), "pickedHouse" => auth()->user()->picked_house_id]);
     }
 
     /**
@@ -74,8 +66,9 @@ class HouseController extends Controller
      */
     public function destroy(House $house)
     {
-        $this->houseService->deleteHouse($house);
+        $this->houseService->setHouse($house);
+        $this->houseService->deleteHouse();
 
-        return response()->json(["houses" => $this->houseService->outputData(auth()->user()->houses), "pickedHouse" => auth()->user()->picked_house_id]);
+        return response()->json(["houses" => $this->houseService->outputData(), "pickedHouse" => auth()->user()->picked_house_id]);
     }
 }
