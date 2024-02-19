@@ -31,6 +31,7 @@ import {BFormSelect} from "bootstrap-vue-next";
              );
              this.$store.dispatch('persist');
              //Todo: Add a toast
+             //Todo: put the new pickedHouse in database
              //Todo: Fetch new dutys
              console.log(`Wartość pickedHouse zmieniła się z ${oldValue} na ${newValue}`);
          },

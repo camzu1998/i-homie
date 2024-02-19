@@ -73,7 +73,7 @@ export default {
         fetchRooms() {
             axios.get('/api/rooms')
                 .then(response => {
-                    this.$store.commit('setRooms', response.data);
+                    this.$store.commit('setRooms', response.data.rooms);
                 })
                 .catch(error => {
                     console.error(error);
@@ -83,7 +83,7 @@ export default {
         deleteRoom(id) {
             axios.delete(`/api/rooms/${id}`)
                 .then(response => {
-                    this.$store.commit('setRooms', response.data);
+                    this.$store.commit('setRooms', response.data.rooms);
                     this.$store.dispatch('persist');
                 })
                 .catch(error => {
@@ -118,7 +118,7 @@ export default {
                 axios.put(`/api/rooms/${this.roomForm.id}`, { name: this.roomForm.name })
                     .then(response => {
                         this.modal = false;
-                        this.$store.commit('setRooms', response.data);
+                        this.$store.commit('setRooms', response.data.rooms);
                         this.$store.dispatch('persist');
                     })
                     .catch(error => {
@@ -128,7 +128,7 @@ export default {
                 axios.post('/api/rooms', { name: this.roomForm.name })
                     .then(response => {
                         this.modal = false;
-                        this.$store.commit('setRooms', response.data);
+                        this.$store.commit('setRooms', response.data.rooms);
                         this.$store.dispatch('persist');
                     })
                     .catch(error => {
