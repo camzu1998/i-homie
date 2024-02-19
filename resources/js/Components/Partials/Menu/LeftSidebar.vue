@@ -31,6 +31,7 @@ import {BFormSelect} from "bootstrap-vue-next";
              );
              this.$store.dispatch('persist');
              //Todo: Add a toast
+             //Todo: put the new pickedHouse in database
              //Todo: Fetch new dutys
              console.log(`Wartość pickedHouse zmieniła się z ${oldValue} na ${newValue}`);
          },
@@ -41,7 +42,10 @@ import {BFormSelect} from "bootstrap-vue-next";
 <template>
     <div class="left-sidebar">
         <div class="mb-3">
-            <BFormSelect v-model="pickedHouse" :options="houseOptions" />
+            <div class="form-floating">
+                <BFormSelect v-model="pickedHouse" :options="houseOptions" id="houseSelect"/>
+                <label for="houseSelect">Pick a house</label>
+            </div>
         </div>
         <h1>Sidebar</h1>
         <Menu :routes="routes" :sidebar="true"/>

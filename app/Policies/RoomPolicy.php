@@ -2,10 +2,10 @@
 
 namespace App\Policies;
 
-use App\Models\House;
+use App\Models\Room;
 use App\Models\User;
 
-class HousePolicy
+class RoomPolicy
 {
     /**
      * Determine whether the user can view any models.
@@ -18,9 +18,9 @@ class HousePolicy
     /**
      * Determine whether the user can view the model.
      */
-    public function view(User $user, House $house): bool
+    public function view(User $user, Room $room): bool
     {
-        return $house->users->contains($user);
+        return $room->house->users->contains($user);
     }
 
     /**
@@ -34,16 +34,16 @@ class HousePolicy
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user, House $house): bool
+    public function update(User $user, Room $room): bool
     {
-        return $house->owner_id === $user->id;
+        return $room->house->users->contains($user);
     }
 
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user, House $house): bool
+    public function delete(User $user, Room $room): bool
     {
-        return $house->owner_id === $user->id;
+        return $room->house->users->contains($user);
     }
 }

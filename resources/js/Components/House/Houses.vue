@@ -1,5 +1,6 @@
 <script setup>
     import { BModal } from 'bootstrap-vue-next';
+    import Repeater from "../Partials/Form/Repeater.vue";
 </script>
 
 <template>
@@ -16,8 +17,8 @@
                     <th scope="col">Actions</th>
                 </tr>
             </thead>
-            <tbody v-if="this.$store.state.house.houses.length > 0">
-                <tr v-for="house in this.$store.state.house.houses" :key="house.id">
+            <tbody v-if="this.$store.getters.getHousesCount > 0">
+                <tr v-for="house in this.$store.getters.getHouses" :key="house.id">
                     <td>{{ house.id }}</td>
                     <td>{{ house.name }}</td>
                     <td>{{ house.owner }}</td>
@@ -44,6 +45,7 @@
             <h3>Invite people to your house</h3>
             <span class="text-muted mb-1">Invite people to your house by his nickname's</span>
             <div class="mb-3">
+                <Repeater :fields="houseForm.users" />
                 <!-- Repeater input for invited users nickname -->
             </div>
             <button type="submit" class="btn btn-primary">Save</button>
@@ -65,7 +67,7 @@ export default {
             houseForm: {
                 id: null,
                 name: '',
-                users: [],
+                users: [{ value: '' }],
                 isEdit: false,
             }
         };
@@ -73,7 +75,7 @@ export default {
 
     methods: {
         fetchHouses() {
-            axios.get('/houses')
+            axios.get('/api/houses')
                 .then(response => {
                     this.$store.commit('setHouses', response.data);
                 })
@@ -83,7 +85,7 @@ export default {
         },
 
         deleteHouse(id) {
-            axios.delete(`/houses/${id}`)
+            axios.delete(`/api/houses/${id}`)
                 .then(response => {
                     this.$store.commit('setHouses', response.data);
                     this.$store.dispatch('persist');
@@ -95,11 +97,11 @@ export default {
 
         editHouse(id) {
             //Open modal and fetch house data
-            axios.get(`/houses/${id}`)
+            axios.get(`/api/houses/${id}`)
                 .then(response => {
                     this.houseForm.id = response.data.house.id;
                     this.houseForm.name = response.data.house.name;
-                    this.houseForm.users = response.data.house.users;
+                    this.houseForm.users = response.data.users;
                     this.houseForm.isEdit = true;
                 })
                 .catch(error => {
@@ -110,14 +112,22 @@ export default {
         addHouse() {
             this.modal = true;
             this.houseForm.name = '';
+            this.houseForm.users = [{ value: '' }];
             this.houseForm.isEdit = false;
             // this.houseForm.users = response.data.users;
             //Open modal
         },
         onSubmit() {
+            //Transform request data
+            const users = this.houseForm.users.map(user => user.value);
+
+            const transformedRequestData = {
+                name: this.houseForm.name,
+                users: users,
+            };
             //Submit form
             if (this.houseForm.isEdit) {
-                axios.put(`/houses/${this.houseForm.id}`, { name: this.houseForm.name })
+                axios.put(`/api/houses/${this.houseForm.id}`, transformedRequestData)
                     .then(response => {
                         this.modal = false;
                         this.$store.commit('setHouses', response.data);
@@ -127,7 +137,7 @@ export default {
                         console.error(error);
                     });
             } else {
-                axios.post('/houses', { name: this.houseForm.name })
+                axios.post('/api/houses', transformedRequestData)
                     .then(response => {
                         this.modal = false;
                         this.$store.commit('setHouses', response.data);
@@ -142,7 +152,7 @@ export default {
         },
         reload() {
             this.$forceUpdate();
-        }
+        },
     },
 };
 </script>

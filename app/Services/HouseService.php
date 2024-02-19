@@ -15,7 +15,11 @@ class HouseService
                 'id' => $house->id,
                 'name' => $house->name,
                 'owner' => $house->owner->name,
-                'users' => $house->users->pluck('name')->toArray(),
+                'users' => $house->users->map(function ($user) {
+                    return [
+                        'value' => $user->name,
+                    ];
+                })->toArray(),
             ];
         }
 
@@ -25,7 +29,7 @@ class HouseService
     public function syncUsers(House $house, array $usersNames = []): void
     {
         $users = User::whereIn('name', $usersNames)->get('id')->pluck('id')->toArray();
-        $house->users()->sync($users + [auth()->id()]);
+        $house->users()->sync($users + [auth()->id() => ['status' => 'accepted']]);
     }
 
     public function setPickedHouse(House $house): void

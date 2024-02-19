@@ -4,6 +4,7 @@ import Profile from "./Components/User/Profile.vue";
 import LeftSidebar from "./Components/Partials/Menu/LeftSidebar.vue";
 import LoginForm from "./Components/Auth/LoginForm.vue";
 import Houses from "./Components/House/Houses.vue";
+import Rooms from "./Components/Room/Rooms.vue";
 
 export default [
     {
@@ -68,7 +69,7 @@ export default [
     {
         path: '/rooms',
         components: {
-            default: Profile,
+            default: Rooms,
             LeftSidebar,
         },
         name: 'Rooms',
@@ -105,7 +106,7 @@ export default [
         },
     },
     {
-        path: '/house',
+        path: '/houses',
         components: {
             default: Houses,
             LeftSidebar,
