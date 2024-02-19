@@ -1,6 +1,7 @@
 import { createStore, createLogger } from 'vuex';
 import VuexPersistence from 'vuex-persist'
 import houseStore from './modules/houseStore';
+import roomStore from "./modules/roomsStore";
 
 const persist = new VuexPersistence({
     key: 'vuex',
@@ -12,7 +13,8 @@ const debug = process.env.NODE_ENV !== 'production';
 
 const store = createStore({
     modules: {
-        house: houseStore
+        house: houseStore,
+        room: roomStore,
     },
     state: {
             isLoggedIn: false,

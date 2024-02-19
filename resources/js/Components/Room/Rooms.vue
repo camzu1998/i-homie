@@ -4,7 +4,7 @@
 
 <template>
     <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-        <button class="btn btn-outline-primary" @click="addHouse()">Add House</button>
+        <button class="btn btn-outline-primary" @click="addRoom()">Add room</button>
     </div>
     <div class="row">
         <table class="table">
@@ -12,37 +12,35 @@
                 <tr>
                     <th scope="col">ID</th>
                     <th scope="col">Name</th>
-                    <th scope="col">Owner</th>
                     <th scope="col">Actions</th>
                 </tr>
             </thead>
-            <tbody v-if="this.$store.getters.getHousesCount > 0">
-                <tr v-for="house in this.$store.getters.getHouses" :key="house.id">
-                    <td>{{ house.id }}</td>
-                    <td>{{ house.name }}</td>
-                    <td>{{ house.owner }}</td>
+            <tbody v-if="this.$store.getters.getRoomsCount > 0">
+                <tr v-for="room in this.$store.getters.getRooms" :key="room.id">
+                    <td>{{ room.id }}</td>
+                    <td>{{ room.name }}</td>
                     <td>
-                        <button class="btn btn-outline-primary me-2" @click="editHouse(house.id)"><i class="fa-regular fa-pen-to-square"></i> Edit</button>
-                        <button class="btn btn-outline-danger" @click="deleteHouse(house.id)"><i class="fa-regular fa-trash-can"></i> Delete</button>
+                        <button class="btn btn-outline-primary me-2" @click="editRoom(room.id)"><i class="fa-regular fa-pen-to-square"></i> Edit</button>
+                        <button class="btn btn-outline-danger" @click="deleteRoom(room.id)"><i class="fa-regular fa-trash-can"></i> Delete</button>
                     </td>
                 </tr>
             </tbody>
             <tbody v-else>
                 <tr>
-                    <td colspan="4" class="text-center">No houses found</td>
+                    <td colspan="4" class="text-center">No rooms found</td>
                 </tr>
             </tbody>
         </table>
     </div>
-    <BModal v-model="modal" title="House" :hideFooter="true">
+    <BModal v-model="modal" title="Room" :hideFooter="true">
         <form @submit.prevent="onSubmit" >
-            <h3>House Form</h3>
+            <h3>Room Form</h3>
             <div class="mb-3">
                 <label for="name" class="form-label">Name</label>
-                <input type="text" class="form-control" id="name" v-model="houseForm.name">
+                <input type="text" class="form-control" id="name" v-model="roomForm.name">
             </div>
-            <h3>Invite people to your house</h3>
-            <span class="text-muted mb-1">Invite people to your house by his nickname's</span>
+            <h3>Assign homie to room</h3>
+            <span class="text-muted mb-1">Assign a homie to a room, s/he will receive notifications if the entry concerns this room</span>
             <div class="mb-3">
                 <!-- Repeater input for invited users nickname -->
             </div>
@@ -56,13 +54,13 @@ import {ref} from "vue";
 
 export default {
     mounted() {
-        this.fetchHouses();
+        this.fetchRooms();
     },
 
     data() {
         return {
             modal: ref(false),
-            houseForm: {
+            roomForm: {
                 id: null,
                 name: '',
                 users: [],
@@ -72,20 +70,20 @@ export default {
     },
 
     methods: {
-        fetchHouses() {
-            axios.get('/api/houses')
+        fetchRooms() {
+            axios.get('/api/rooms')
                 .then(response => {
-                    this.$store.commit('setHouses', response.data);
+                    this.$store.commit('setRooms', response.data);
                 })
                 .catch(error => {
                     console.error(error);
                 });
         },
 
-        deleteHouse(id) {
-            axios.delete(`/api/houses/${id}`)
+        deleteRoom(id) {
+            axios.delete(`/api/rooms/${id}`)
                 .then(response => {
-                    this.$store.commit('setHouses', response.data);
+                    this.$store.commit('setRooms', response.data);
                     this.$store.dispatch('persist');
                 })
                 .catch(error => {
@@ -93,44 +91,44 @@ export default {
                 });
         },
 
-        editHouse(id) {
-            //Open modal and fetch house data
-            axios.get(`/api/houses/${id}`)
+        editRoom(id) {
+            //Open modal and fetch room data
+            axios.get(`/api/rooms/${id}`)
                 .then(response => {
-                    this.houseForm.id = response.data.house.id;
-                    this.houseForm.name = response.data.house.name;
-                    this.houseForm.users = response.data.house.users;
-                    this.houseForm.isEdit = true;
+                    this.roomForm.id = response.data.room.id;
+                    this.roomForm.name = response.data.room.name;
+                    this.roomForm.users = response.data.room.users;
+                    this.roomForm.isEdit = true;
                 })
                 .catch(error => {
                     console.error(error);
                 });
             this.modal = true;
         },
-        addHouse() {
+        addRoom() {
             this.modal = true;
-            this.houseForm.name = '';
-            this.houseForm.isEdit = false;
-            // this.houseForm.users = response.data.users;
+            this.roomForm.name = '';
+            this.roomForm.isEdit = false;
+            // this.roomForm.users = response.data.users;
             //Open modal
         },
         onSubmit() {
             //Submit form
-            if (this.houseForm.isEdit) {
-                axios.put(`/api/houses/${this.houseForm.id}`, { name: this.houseForm.name })
+            if (this.roomForm.isEdit) {
+                axios.put(`/api/rooms/${this.roomForm.id}`, { name: this.roomForm.name })
                     .then(response => {
                         this.modal = false;
-                        this.$store.commit('setHouses', response.data);
+                        this.$store.commit('setRooms', response.data);
                         this.$store.dispatch('persist');
                     })
                     .catch(error => {
                         console.error(error);
                     });
             } else {
-                axios.post('/api/houses', { name: this.houseForm.name })
+                axios.post('/api/rooms', { name: this.roomForm.name })
                     .then(response => {
                         this.modal = false;
-                        this.$store.commit('setHouses', response.data);
+                        this.$store.commit('setRooms', response.data);
                         this.$store.dispatch('persist');
                     })
                     .catch(error => {

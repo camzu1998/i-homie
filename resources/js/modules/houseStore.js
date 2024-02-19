@@ -13,6 +13,15 @@ const houseStore = {
             state.pickedHouse = null;
         },
     },
+    getters: {
+        getHouses(state) {
+            return state.houses;
+        },
+
+        getHousesCount(state, getters) {
+            return getters.getHouses.length;
+        }
+    },
     actions: {
         housesFetched({commit}, options) {
             commit('setHouses', options);
