@@ -24,7 +24,7 @@ class House extends Model
 
     public function users(): BelongsToMany
     {
-        return $this->belongsToMany(User::class);
+        return $this->belongsToMany(User::class)->withPivot('status');
     }
 
     public function rooms(): HasMany

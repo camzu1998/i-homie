@@ -54,7 +54,7 @@ class User extends Authenticatable
 
     public function houses(): BelongsToMany
     {
-        return $this->belongsToMany(House::class);
+        return $this->belongsToMany(House::class)->withPivot('status');
     }
 
     public function rooms(): HasMany

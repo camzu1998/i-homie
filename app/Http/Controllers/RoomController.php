@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\HouseInviteStatus;
 use App\Http\Requests\RoomRequest;
 use App\Models\Room;
 
@@ -17,7 +18,7 @@ class RoomController extends Controller
     public function index()
     {
         $rooms = auth()->user()->pickedHouse->rooms;
-        $users = auth()->user()->pickedHouse->users->map(function ($user) {
+        $users = auth()->user()->pickedHouse->users()->wherePivot('status', HouseInviteStatus::ACCEPTED)->get()->map(function ($user) {
             return [
                 'value' => $user->id,
                 'text' => $user->name,

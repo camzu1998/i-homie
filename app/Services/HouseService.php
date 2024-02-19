@@ -25,7 +25,7 @@ class HouseService
     public function syncUsers(House $house, array $usersNames = []): void
     {
         $users = User::whereIn('name', $usersNames)->get('id')->pluck('id')->toArray();
-        $house->users()->sync($users + [auth()->id()]);
+        $house->users()->sync($users + [auth()->id() => ['status' => 'accepted']]);
     }
 
     public function setPickedHouse(House $house): void
