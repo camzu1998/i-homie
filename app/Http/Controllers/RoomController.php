@@ -17,8 +17,15 @@ class RoomController extends Controller
     public function index()
     {
         $rooms = auth()->user()->pickedHouse->rooms;
+        $users = auth()->user()->pickedHouse->users->map(function ($user) {
+            return [
+                'value' => $user->id,
+                'text' => $user->name,
+            ];
+        });
+        $users[] = ['value' => null, 'text' => 'Dont assign homie to room'];
 
-        return response()->json(['rooms' => $rooms]);
+        return response()->json(['rooms' => $rooms, 'users' => $users]);
     }
 
     /**

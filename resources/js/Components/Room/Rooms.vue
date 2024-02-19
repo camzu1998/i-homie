@@ -1,5 +1,5 @@
 <script setup>
-    import { BModal } from 'bootstrap-vue-next';
+    import { BModal, BFormSelect } from 'bootstrap-vue-next';
 </script>
 
 <template>
@@ -42,7 +42,7 @@
             <h3>Assign homie to room</h3>
             <span class="text-muted mb-1">Assign a homie to a room, s/he will receive notifications if the entry concerns this room</span>
             <div class="mb-3">
-                <!-- Repeater input for invited users nickname -->
+                <BFormSelect v-model="roomForm.user_id" :options="roomForm.users"/>
             </div>
             <button type="submit" class="btn btn-primary">Save</button>
         </form>
@@ -63,6 +63,7 @@ export default {
             roomForm: {
                 id: null,
                 name: '',
+                user_id: null,
                 users: [],
                 isEdit: false,
             }
@@ -74,6 +75,7 @@ export default {
             axios.get('/api/rooms')
                 .then(response => {
                     this.$store.commit('setRooms', response.data.rooms);
+                    this.roomForm.users = response.data.users;
                 })
                 .catch(error => {
                     console.error(error);
@@ -97,7 +99,7 @@ export default {
                 .then(response => {
                     this.roomForm.id = response.data.room.id;
                     this.roomForm.name = response.data.room.name;
-                    this.roomForm.users = response.data.room.users;
+                    this.roomForm.user_id = response.data.room.user_id;
                     this.roomForm.isEdit = true;
                 })
                 .catch(error => {
@@ -108,6 +110,7 @@ export default {
         addRoom() {
             this.modal = true;
             this.roomForm.name = '';
+            this.roomForm.user_id = null;
             this.roomForm.isEdit = false;
             // this.roomForm.users = response.data.users;
             //Open modal
@@ -115,7 +118,7 @@ export default {
         onSubmit() {
             //Submit form
             if (this.roomForm.isEdit) {
-                axios.put(`/api/rooms/${this.roomForm.id}`, { name: this.roomForm.name })
+                axios.put(`/api/rooms/${this.roomForm.id}`, { name: this.roomForm.name, user_id: this.roomForm.user_id })
                     .then(response => {
                         this.modal = false;
                         this.$store.commit('setRooms', response.data.rooms);
@@ -125,7 +128,7 @@ export default {
                         console.error(error);
                     });
             } else {
-                axios.post('/api/rooms', { name: this.roomForm.name })
+                axios.post('/api/rooms', { name: this.roomForm.name, user_id: this.roomForm.user_id})
                     .then(response => {
                         this.modal = false;
                         this.$store.commit('setRooms', response.data.rooms);
