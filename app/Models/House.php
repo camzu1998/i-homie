@@ -31,4 +31,9 @@ class House extends Model
     {
         return $this->hasMany(Room::class);
     }
+
+    public function duties(): HasMany
+    {
+        return $this->hasMany(Duty::class);
+    }
 }
