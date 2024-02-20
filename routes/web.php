@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\DutyController;
 use App\Http\Controllers\HouseController;
 use App\Http\Controllers\RoomController;
 use App\Http\Controllers\UserController;
@@ -36,6 +37,13 @@ Route::prefix('api')->group(function () {
     Route::get('/rooms/{room}', [RoomController::class, 'show'])->name('rooms.show');
     Route::put('/rooms/{room}', [RoomController::class, 'update'])->name('rooms.update');
     Route::delete('/rooms/{room}', [RoomController::class, 'destroy'])->name('rooms.destroy');
+
+    //Duty routes
+    Route::get('/duties', [DutyController::class, 'index'])->name('duties.index');
+    Route::post('/duties', [DutyController::class, 'store'])->name('duties.store');
+    Route::get('/duties/{duty}', [DutyController::class, 'show'])->name('duties.show');
+    Route::put('/duties/{duty}', [DutyController::class, 'update'])->name('duties.update');
+    Route::delete('/duties/{duty}', [DutyController::class, 'destroy'])->name('duties.destroy');
 });
 
 //To prevent duplicating blank routes for vue.js, we can use this wildcard route

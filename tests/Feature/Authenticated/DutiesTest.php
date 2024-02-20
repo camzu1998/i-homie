@@ -35,7 +35,7 @@ class DutiesTest extends AuthenticatedTestCase
     public function user_can_create_duty(): void
     {
         $response = $this->post('/api/duties', [
-            'name' => 'Room Name',
+            'name' => 'Duty Name',
             'status' => 'active',
             'user_id' => $this->user->id,
             'room_id' => $this->room->id,
@@ -44,7 +44,7 @@ class DutiesTest extends AuthenticatedTestCase
             'end_date' => '2025-01-01',
         ]);
         $response->assertStatus(200);
-        $this->assertDatabaseHas('rooms', ['name' => 'Room Name']);
+        $this->assertDatabaseHas('duties', ['name' => 'Duty Name']);
     }
 
     /**
@@ -53,9 +53,10 @@ class DutiesTest extends AuthenticatedTestCase
      */
     public function user_can_update_duty(): void
     {
-        $duty = $this->user->duties()->create([
+        $duty = $this->house->duties()->create([
             'name' => 'Duty Name',
             'status' => 'active',
+            'user_id' => $this->user->id,
             'room_id' => $this->room->id,
             'frequency' => 'daily',
             'start_date' => '2024-01-01',
@@ -64,6 +65,12 @@ class DutiesTest extends AuthenticatedTestCase
 
         $response = $this->put(route('duties.update', $duty), [
             'name' => 'Duty Test',
+            'status' => 'active',
+            'user_id' => $this->user->id,
+            'room_id' => $this->room->id,
+            'frequency' => 'daily',
+            'start_date' => '2024-01-01',
+            'end_date' => '2025-01-01',
         ]);
         $response->assertStatus(200);
         $this->assertDatabaseHas('duties', ['name' => 'Duty Test']);
@@ -75,9 +82,10 @@ class DutiesTest extends AuthenticatedTestCase
      */
     public function user_can_delete_duty(): void
     {
-        $duty = $this->user->duties()->create([
+        $duty = $this->house->duties()->create([
             'name' => 'Duty Name',
             'status' => 'active',
+            'user_id' => $this->user->id,
             'room_id' => $this->room->id,
             'frequency' => 'daily',
             'start_date' => '2024-01-01',

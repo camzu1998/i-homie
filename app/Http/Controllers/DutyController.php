@@ -7,20 +7,17 @@ use App\Models\Duty;
 
 class DutyController extends Controller
 {
+    public function __construct()
+    {
+        $this->authorizeResource(Duty::class, 'duty');
+    }
+
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+        return response()->json(["duties" => auth()->user()->duties]);
     }
 
     /**
@@ -28,23 +25,16 @@ class DutyController extends Controller
      */
     public function store(DutyRequest $request)
     {
-        //
-    }
+        $duty = auth()->user()->pickedHouse->duties()->create($request->validated());
 
+        return response()->json(["duty" => $duty]);
+    }
     /**
      * Display the specified resource.
      */
     public function show(Duty $duty)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Duty $duty)
-    {
-        //
+        return response()->json(["duty" => $duty]);
     }
 
     /**
@@ -52,7 +42,9 @@ class DutyController extends Controller
      */
     public function update(DutyRequest $request, Duty $duty)
     {
-        //
+        $duty->update($request->validated());
+
+        return response()->json(["duty" => $duty]);
     }
 
     /**
@@ -60,6 +52,8 @@ class DutyController extends Controller
      */
     public function destroy(Duty $duty)
     {
-        //
+        $duty->delete();
+
+        return response()->json(["duties" => auth()->user()->duties]);
     }
 }
