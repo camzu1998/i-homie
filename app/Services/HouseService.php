@@ -7,10 +7,53 @@ use App\Models\User;
 
 class HouseService
 {
-    public function outputData($houses): array
+    private User $user;
+    private House $house;
+
+    public function __construct()
+    {
+        $this->user = auth()->user();
+    }
+
+    public function setHouse(House $house): self
+    {
+        $this->house = $house;
+
+        return $this;
+    }
+
+    public function setUser(User $user): self
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    public function getHouse(): House
+    {
+        return $this->house;
+    }
+
+    public function getUser()
+    {
+        return $this->user;
+    }
+
+    public function create(array $data, array $usersNames = []): self
+    {
+        $this->house = $this->user->ownHouses()->create($data);
+        $this->syncUsers($usersNames);
+
+        //Todo: do this when user has no houses or picked house
+        $this->setPickedHouse();
+
+        return $this;
+    }
+
+    public function outputData(): array
     {
         $output = [];
-        foreach ($houses as $house) {
+        foreach ($this->user->houses as $house) {
             $output[] = [
                 'id' => $house->id,
                 'name' => $house->name,
@@ -26,22 +69,28 @@ class HouseService
         return $output;
     }
 
-    public function syncUsers(House $house, array $usersNames = []): void
+    public function syncUsers(array $usersNames = []): self
     {
         $users = User::whereIn('name', $usersNames)->get('id')->pluck('id')->toArray();
-        $house->users()->sync($users + [auth()->id() => ['status' => 'accepted']]);
+        $this->house->users()->sync($users + [$this->user->id => ['status' => 'accepted']]);
+
+        return $this;
     }
 
-    public function setPickedHouse(House $house): void
+    public function setPickedHouse(): self
     {
-        auth()->user()->picked_house_id = $house->id;
-        auth()->user()->save();
+        $this->user->picked_house_id = $this->house->id;
+        $this->user->save();
+
+        return $this;
     }
 
-    public function deleteHouse(House $house): void
+    public function deleteHouse(): self
     {
-        User::where('picked_house_id', $house->id)->update(['picked_house_id' => null]);
-        $house->users()->detach();
-        $house->delete();
+        User::where('picked_house_id', $this->house->id)->update(['picked_house_id' => null]);
+        $this->house->users()->detach();
+        $this->house->delete();
+
+        return $this;
     }
 }

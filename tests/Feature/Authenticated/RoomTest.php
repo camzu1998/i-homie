@@ -2,6 +2,7 @@
 namespace Tests\Feature\Authenticated;
 
 use App\Models\House;
+use App\Services\HouseService;
 
 class RoomTest extends AuthenticatedTestCase
 {
@@ -11,9 +12,7 @@ class RoomTest extends AuthenticatedTestCase
     {
         parent::setUp();
 
-        $this->house = $this->user->ownHouses()->create(['name' => 'First Name']);
-        $this->house->users()->attach($this->user);
-        $this->user->update(['picked_house_id' => $this->house->id]);
+        $this->house = (new HouseService())->create(['name' => 'First Name'])->getHouse();
     }
     /**
      * Test user can fetch rooms

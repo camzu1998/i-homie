@@ -5,6 +5,7 @@ import LeftSidebar from "./Components/Partials/Menu/LeftSidebar.vue";
 import LoginForm from "./Components/Auth/LoginForm.vue";
 import Houses from "./Components/House/Houses.vue";
 import Rooms from "./Components/Room/Rooms.vue";
+import Duties from "./Components/Duty/Duties.vue";
 
 export default [
     {
@@ -56,7 +57,7 @@ export default [
     {
         path: '/duties',
         components: {
-            default: Profile,
+            default: Duties,
             LeftSidebar,
         },
         name: 'Duties',

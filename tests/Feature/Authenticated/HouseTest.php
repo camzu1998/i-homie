@@ -38,14 +38,14 @@ class HouseTest extends AuthenticatedTestCase
             'users' => $usernames
         ]);
         $response->assertStatus(200);//->assertJsonFragment(['status' => 'success']);
-        $this->assertDatabaseHas('house_user', ['user_id' => 3]);
+        $this->assertDatabaseHas('house_user', ['user_id' => $users->first()->id]);
         unset($usernames[0]);
         $response = $this->put(route('houses.update', $house), [
             'name' => 'House Name',
             'users' => $usernames
         ]);
         $response->assertStatus(200);//->assertJsonFragment(['status' => 'success']);
-        $this->assertDatabaseMissing('house_user', ['user_id' => 3]);
+        $this->assertDatabaseMissing('house_user', ['user_id' => $users->first()->id]);
     }
 
     /**

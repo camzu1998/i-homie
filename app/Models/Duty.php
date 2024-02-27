@@ -5,16 +5,21 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class Room extends Model
+class Duty extends Model
 {
     use HasFactory;
 
     protected $fillable = [
         'name',
-        'house_id',
-        'user_id'
+        'description',
+        'user_id',
+        'room_id',
+        'status',
+        'frequency',
+        'start_date',
+        'end_date',
+        'last_performed',
     ];
 
     public function house(): BelongsTo
@@ -22,13 +27,14 @@ class Room extends Model
         return $this->belongsTo(House::class);
     }
 
+    public function room(): BelongsTo
+    {
+        return $this->belongsTo(Room::class);
+    }
+
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
-    public function duties(): HasMany
-    {
-        return $this->hasMany(Duty::class);
-    }
 }
