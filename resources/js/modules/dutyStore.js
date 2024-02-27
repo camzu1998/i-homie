@@ -3,18 +3,16 @@ const dutyStore = {
             duties: null,
     }),
     mutations: {
-        setDuties(state, options) {
-            state.houses = options.houses
-            state.pickedHouse = options.pickedHouse;
+        setDuties(state, duties) {
+            state.duties = duties
         },
         removeDuties(state) {
-            state.houses = null;
-            state.pickedHouse = null;
+            state.duties = null;
         },
     },
     getters: {
         getDuties(state) {
-            return state.houses;
+            return state.duties ?? [];
         },
 
         getDutiesCount(state, getters) {

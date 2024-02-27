@@ -24,12 +24,12 @@ class DutyRequest extends FormRequest
         return [
             'name' => ['required', 'string', 'max:255'],
             'description' => ['nullable', 'string', 'max:255'],
-            'user_id' => ['required', 'nullable', 'exists:users,id'],
-            'room_id' => ['required', 'nullable', 'exists:rooms,id'],
+            'user_id' => ['nullable', 'exists:users,id'],
+            'room_id' => ['nullable', 'exists:rooms,id'],
             'status' => ['required', 'string', 'max:255'],
             'frequency' => ['required', 'string', 'max:255'],
             'start_date' => ['required', 'date'],
-            'end_date' => ['required', 'nullable', 'date'],
+            'end_date' => ['nullable', 'date'],
         ];
     }
 }

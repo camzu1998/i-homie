@@ -33,7 +33,7 @@
         </table>
     </div>
     <BModal v-model="modal" title="Duty" :hideFooter="true">
-        <form @submit.prevent="onSubmit" >
+        <form @submit.prevent="onSubmit" id="dutyForm">
             <h3>Duty Form</h3>
             <div class="mb-3">
                 <label for="name" class="form-label">Name</label>
@@ -57,11 +57,11 @@
             </div>
             <div class="mb-3">
                 <label for="date_start" class="form-label">Start date</label>
-                <BFormInput v-model="dutyForm.date_start" :type="'date'" id="date_start"/>
+                <BFormInput v-model="dutyForm.start_date" :type="'date'" id="date_start"/>
             </div>
             <div class="mb-3">
                 <label for="date_end" class="form-label">End date</label>
-                <BFormInput v-model="dutyForm.date_end" :type="'date'" id="date_end"/>
+                <BFormInput v-model="dutyForm.end_date" :type="'date'" id="date_end"/>
             </div>
 
             <h3>Assign homie to duty</h3>
@@ -94,9 +94,9 @@ export default {
                 status: 'active',
                 isEdit: false,
                 room_id: null,
-                description: '',
-                date_start: '',
-                date_end: ''
+                description: null,
+                start_date: '',
+                end_date: null
             },
             defaults: {
                 users: [],
@@ -121,7 +121,7 @@ export default {
             axios.get('/api/duties')
                 .then(response => {
                     this.$store.commit('setDuties', response.data.duties);
-                    this.dutyForm.users = response.data.users;
+                    this.defaults.users = response.data.users;
                 })
                 .catch(error => {
                     console.error(error);
@@ -146,6 +146,12 @@ export default {
                     this.dutyForm.id = response.data.duty.id;
                     this.dutyForm.name = response.data.duty.name;
                     this.dutyForm.user_id = response.data.duty.user_id;
+                    this.dutyForm.frequency = response.data.duty.frequency;
+                    this.dutyForm.status = response.data.duty.status;
+                    this.dutyForm.room_id = response.data.duty.room_id;
+                    this.dutyForm.description = response.data.duty.description;
+                    this.dutyForm.start_date = response.data.duty.start_date;
+                    this.dutyForm.end_date = response.data.duty.end_date;
                     this.dutyForm.isEdit = true;
                 })
                 .catch(error => {
@@ -157,6 +163,12 @@ export default {
             this.modal = true;
             this.dutyForm.name = '';
             this.dutyForm.user_id = null;
+            this.dutyForm.frequency = 'daily';
+            this.dutyForm.status = 'active';
+            this.dutyForm.room_id = null;
+            this.dutyForm.description = null;
+            this.dutyForm.start_date = '';
+            this.dutyForm.end_date = null;
             this.dutyForm.isEdit = false;
             // this.dutyForm.users = response.data.users;
             //Open modal
@@ -164,7 +176,7 @@ export default {
         onSubmit() {
             //Submit form
             if (this.dutyForm.isEdit) {
-                axios.put(`/api/duties/${this.dutyForm.id}`, { name: this.dutyForm.name, user_id: this.dutyForm.user_id })
+                axios.put(`/api/duties/${this.dutyForm.id}`, this.dutyForm)
                     .then(response => {
                         this.modal = false;
                         this.$store.commit('setDuties', response.data.duties);
@@ -174,7 +186,7 @@ export default {
                         console.error(error);
                     });
             } else {
-                axios.post('/api/duties', { name: this.dutyForm.name, user_id: this.dutyForm.user_id})
+                axios.post('/api/duties', this.dutyForm)
                     .then(response => {
                         this.modal = false;
                         this.$store.commit('setDuties', response.data.duties);
@@ -184,11 +196,6 @@ export default {
                         console.error(error);
                     });
             }
-
-            this.reload();
-        },
-        reload() {
-            this.$forceUpdate();
         }
     },
 };

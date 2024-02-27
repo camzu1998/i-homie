@@ -15,6 +15,7 @@ export default {
                     this.$store.commit('removeUser');
                     this.$store.commit('removeHouses');
                     this.$store.commit('removeRooms');
+                    this.$store.commit('removeDuties');
                     this.$store.dispatch('persist');
                     this.$router.push('/login');
                 })
