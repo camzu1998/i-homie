@@ -17,7 +17,8 @@ export default [
         name: 'Home',
         meta: {
             auth: true,
-            sidebar: false
+            sidebar: false,
+            icon: 'fa-solid fa-home'
         },
     },
     {
@@ -28,7 +29,8 @@ export default [
         name: 'Login',
         meta: {
             auth: false,
-            sidebar: false
+            sidebar: false,
+            icon: 'fa-solid fa-right-to-bracket'
         },
     },
     {
@@ -39,7 +41,8 @@ export default [
         name: 'Register',
         meta: {
             auth: false,
-            sidebar: false
+            sidebar: false,
+            icon: 'fa-solid fa-user-plus'
         },
     },
     {

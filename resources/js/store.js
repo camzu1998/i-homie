@@ -36,6 +36,12 @@ const store = createStore({
         userLoggedIn({commit}, user) {
             commit('setUser', user);
         },
+        removeAllUserData({commit}) {
+            commit('removeUser');
+            commit('removeHouses');
+            commit('removeRooms');
+            commit('removeDuties');
+        }
     },
     strict: debug,
     plugins: [

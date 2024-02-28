@@ -46,4 +46,12 @@ class HousePolicy
     {
         return $house->owner_id === $user->id;
     }
+
+    /**
+     * Determine whether the user can assign model.
+     */
+    public function set(User $user, House $house): bool
+    {
+        return $house->users->contains($user);
+    }
 }
