@@ -28,19 +28,23 @@ import {BFormSelect, BToast} from "bootstrap-vue-next";
      },
      watch: {
          pickedHouse(newValue, oldValue) {
-             // Kod do wykonania, gdy wartość createHouse się zmieni
-             this.$store.commit('setHouses',
-                 {
-                     houses: this.$store.state.house.houses,
-                     pickedHouse: newValue
-                 }
-             );
              this.$store.dispatch('persist');
              axios.put('/api/houses/' + newValue + '/set')
                  .then(response => {
+                     //Toast message
                      this.toast.title = 'House changed';
                      this.toast.content = 'House changed successfully';
                      this.toast.active = true;
+
+                     this.$store.commit('setHouses',
+                         {
+                             houses: response.data.houses,
+                             pickedHouse: response.data.pickedHouse
+                         }
+                     );
+                     this.$store.commit('setRooms', response.data.rooms);
+                     this.$store.commit('setDuties', response.data.duties);
+
                  })
                  .catch(error => {
                      console.error(error);

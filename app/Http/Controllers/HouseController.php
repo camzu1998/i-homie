@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\HouseInviteStatus;
 use App\Http\Requests\HouseRequest;
 use App\Models\House;
 use App\Services\HouseService;
@@ -83,6 +84,13 @@ class HouseController extends Controller
         $this->houseService->setUser()->setHouse($house);
         $this->houseService->setPickedHouse();
 
-        return response()->json(["houses" => $this->houseService->outputData(), "pickedHouse" => auth()->user()->picked_house_id]);
+        $users = auth()->user()->pickedHouse->users()->wherePivot('status', HouseInviteStatus::ACCEPTED)->get()->map(function ($user) {
+            return [
+                'value' => $user->id,
+                'text' => $user->name,
+            ];
+        });
+
+        return response()->json(["houses" => $this->houseService->outputData(), "pickedHouse" => auth()->user()->picked_house_id, "duties" => auth()->user()->pickedHouse->duties()->get(), "users" => $users, 'rooms' => auth()->user()->pickedHouse->rooms]);
     }
 }
