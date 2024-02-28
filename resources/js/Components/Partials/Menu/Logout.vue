@@ -1,6 +1,6 @@
 <template>
-    <li class="nav-item fon">
-        <button class="nav-link btn btn-outline-danger" type="submit" form="logout-form">Logout</button>
+    <li class="nav-item d-flex justify-content-center">
+        <button class="nav-link btn btn-outline-danger w-25" type="submit" form="logout-form"><i class="fa-solid fa-arrow-right-from-bracket"></i> Logout</button>
     </li>
     <form @submit.prevent="onSubmit" id="logout-form"></form>
 </template>

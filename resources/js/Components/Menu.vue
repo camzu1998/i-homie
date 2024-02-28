@@ -25,6 +25,7 @@
                 :name="route.name"
                 :active="route.path === this.$route.path ? 'active' : ''"
                 :hidden="route.meta.sidebar || (route.meta.auth && !this.$store.state.isLoggedIn) || (!route.meta.auth && this.$store.state.isLoggedIn)"
+                :icon="route.meta.icon"
             />
             <li class="nav-item" v-if="this.$store.state.isLoggedIn">
                 <div class="row">
