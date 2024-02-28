@@ -25,7 +25,7 @@ class DutyController extends Controller
             ];
         });
 
-        return response()->json(["duties" => auth()->user()->pickedHouse->duties()->get(), "users" => $users]);
+        return response()->json(["duties" => auth()->user()->pickedHouse->duties()->with(['user', 'room'])->get(), "users" => $users]);
     }
 
     /**
@@ -35,7 +35,7 @@ class DutyController extends Controller
     {
         $duty = auth()->user()->pickedHouse->duties()->create($request->validated());
 
-        return response()->json(["duties" => auth()->user()->pickedHouse->duties()->get()]);
+        return response()->json(["duties" => auth()->user()->pickedHouse->duties()->with(['user', 'room'])->get()]);
     }
     /**
      * Display the specified resource.
@@ -59,7 +59,7 @@ class DutyController extends Controller
     {
         $duty->update($request->validated());
 
-        return response()->json(["duties" => auth()->user()->pickedHouse->duties()->get()]);
+        return response()->json(["duties" => auth()->user()->pickedHouse->duties()->with(['user', 'room'])->get()]);
     }
 
     /**
@@ -69,6 +69,6 @@ class DutyController extends Controller
     {
         $duty->delete();
 
-        return response()->json(["duties" => auth()->user()->pickedHouse->duties()->get()]);
+        return response()->json(["duties" => auth()->user()->pickedHouse->duties()->with(['user', 'room'])->get()]);
     }
 }

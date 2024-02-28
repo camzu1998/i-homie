@@ -3,8 +3,8 @@
 </script>
 
 <template>
-    <div class="d-md-flex justify-content-md-end">
-        <button class="btn btn-outline-primary btn-lg" style="height: fit-content" @click="addDuty()">Add duty</button>
+    <div class="d-md-flex justify-content-md-end" style="height: 75px">
+        <button class="btn btn-outline-primary btn-lg" style="height: fit-content" @click="addDuty()"><i class="fa-solid fa-plus"></i> Add duty</button>
     </div>
     <div class="row">
         <table class="table">
@@ -12,6 +12,10 @@
                 <tr>
                     <th scope="col">ID</th>
                     <th scope="col">Name</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Frequency</th>
+                    <th scope="col">User</th>
+                    <th scope="col">Room</th>
                     <th scope="col">Actions</th>
                 </tr>
             </thead>
@@ -19,6 +23,15 @@
                 <tr v-for="duty in this.$store.getters.getDuties" :key="duty.id">
                     <td>{{ duty.id }}</td>
                     <td>{{ duty.name }}</td>
+                    <td class="text-success" v-if="duty.status == 'active'">
+                        <i class="fa-solid fa-check"></i> {{ duty.status }}
+                    </td>
+                    <td class="text-danger" v-else>
+                        <i class="fa-solid fa-ban"></i> {{ duty.status }}
+                    </td>
+                    <td>{{ duty.frequency }}</td>
+                    <td>{{ duty.user_id ? duty.user.name : 'All homies' }}</td>
+                    <td>{{ duty.room_id ? duty.room.name : 'All rooms' }}</td>
                     <td>
                         <button class="btn btn-outline-primary me-2" @click="editDuty(duty.id)"><i class="fa-regular fa-pen-to-square"></i> Edit</button>
                         <button class="btn btn-outline-danger" @click="deleteDuty(duty.id)"><i class="fa-regular fa-trash-can"></i> Delete</button>
@@ -100,7 +113,10 @@ export default {
             },
             defaults: {
                 users: [],
-                rooms: [],
+                rooms: this.$store.getters.getRooms.map(room => ({
+                    value: room.id,
+                    text: room.name
+                })),
                 statuses: [
                     { value: 'active', text: 'Active' },
                     { value: 'inactive', text: 'Inactive' },

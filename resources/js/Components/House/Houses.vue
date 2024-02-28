@@ -4,8 +4,8 @@
 </script>
 
 <template>
-    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-        <button class="btn btn-outline-primary" @click="addHouse()">Add House</button>
+    <div class="d-md-flex justify-content-md-end" style="height: 75px">
+        <button class="btn btn-outline-primary btn-lg" style="height: fit-content" @click="addHouse()"><i class="fa-solid fa-plus"></i> Add House</button>
     </div>
     <div class="row">
         <table class="table">

@@ -91,6 +91,12 @@ class HouseController extends Controller
             ];
         });
 
-        return response()->json(["houses" => $this->houseService->outputData(), "pickedHouse" => auth()->user()->picked_house_id, "duties" => auth()->user()->pickedHouse->duties()->get(), "users" => $users, 'rooms' => auth()->user()->pickedHouse->rooms]);
+        return response()->json([
+            "houses" => $this->houseService->outputData(),
+            "pickedHouse" => auth()->user()->picked_house_id,
+            "duties" => auth()->user()->pickedHouse->duties()->with(['user', 'room'])->get(),
+            "users" => $users,
+            'rooms' => auth()->user()->pickedHouse->rooms
+        ]);
     }
 }
