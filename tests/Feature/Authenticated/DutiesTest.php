@@ -15,7 +15,7 @@ class DutiesTest extends AuthenticatedTestCase
     {
         parent::setUp();
 
-        $this->house = (new HouseService())->create(['name' => 'First Name'])->getHouse();
+        $this->house = (new HouseService())->setUser()->create(['name' => 'First Name'])->getHouse();
         $this->room = $this->house->rooms()->create(['name' => 'Room Name']);
     }
     /**

@@ -2,7 +2,7 @@
 
 import routes from "../../../routes.js";
 import Menu from "../../Menu.vue";
-import {BFormSelect} from "bootstrap-vue-next";
+import {BFormSelect, BToast} from "bootstrap-vue-next";
 </script>
 
 <script>
@@ -18,6 +18,12 @@ import {BFormSelect} from "bootstrap-vue-next";
      data() {
          return {
              pickedHouse: this.$store.state.house.pickedHouse,
+             toast: {
+                 title: 'BootstrapVue',
+                 content: 'Hello, world! This is a toast message.',
+                 variant: 'bg-success',
+                 active: false
+             }
          };
      },
      watch: {
@@ -30,9 +36,16 @@ import {BFormSelect} from "bootstrap-vue-next";
                  }
              );
              this.$store.dispatch('persist');
-             //Todo: Add a toast
-             //Todo: put the new pickedHouse in database
-             //Todo: Fetch new dutys
+             axios.put('/api/houses/' + newValue + '/set')
+                 .then(response => {
+                     this.toast.title = 'House changed';
+                     this.toast.content = 'House changed successfully';
+                     this.toast.active = true;
+                 })
+                 .catch(error => {
+                     console.error(error);
+                 });
+             //Todo: Fetch new duties and rooms
              console.log(`Wartość pickedHouse zmieniła się z ${oldValue} na ${newValue}`);
          },
      }
@@ -40,6 +53,9 @@ import {BFormSelect} from "bootstrap-vue-next";
 </script>
 
 <template>
+    <BToast v-model="toast.active" :title="toast.title" :toastClass="toast.variant" :class="'toast-container position-fixed top-0 end-0'">
+        {{ toast.content }}
+    </BToast>
     <div class="left-sidebar">
         <div class="mb-3">
             <div class="form-floating">

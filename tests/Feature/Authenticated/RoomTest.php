@@ -12,7 +12,7 @@ class RoomTest extends AuthenticatedTestCase
     {
         parent::setUp();
 
-        $this->house = (new HouseService())->create(['name' => 'First Name'])->getHouse();
+        $this->house = (new HouseService())->setUser()->create(['name' => 'First Name'])->getHouse();
     }
     /**
      * Test user can fetch rooms
