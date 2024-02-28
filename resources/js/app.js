@@ -15,6 +15,24 @@ const router = createRouter({
     routes,
 })
 
+router.beforeEach((to, from, next) => {
+    if (!to.meta.auth) {
+        next();
+    }
+    axios.get('/api/user')
+        .then(response => {
+            if (response.data.isLogged) {
+                next();
+            } else {
+                store.dispatch('removeAllUserData');
+                next({ path: '/login' });
+            }
+        })
+        .catch(error => {
+            console.error(error);
+        });
+});
+
 const app = createApp(App)
 
 app.use(router);

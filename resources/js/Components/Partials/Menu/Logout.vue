@@ -12,10 +12,7 @@ export default {
             axios.post('/logout')
                 .then(response => {
 
-                    this.$store.commit('removeUser');
-                    this.$store.commit('removeHouses');
-                    this.$store.commit('removeRooms');
-                    this.$store.commit('removeDuties');
+                    this.$store.dispatch('removeAllUserData');
                     this.$store.dispatch('persist');
                     this.$router.push('/login');
                 })

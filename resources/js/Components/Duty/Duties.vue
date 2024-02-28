@@ -3,8 +3,8 @@
 </script>
 
 <template>
-    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-        <button class="btn btn-outline-primary" @click="addDuty()">Add duty</button>
+    <div class="d-md-flex justify-content-md-end">
+        <button class="btn btn-outline-primary btn-lg" style="height: fit-content" @click="addDuty()">Add duty</button>
     </div>
     <div class="row">
         <table class="table">

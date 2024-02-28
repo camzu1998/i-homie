@@ -13,7 +13,6 @@
             default: false,
         }
     });
-    console.log(props.routes);
     const sidebarClass = 'w-100';
 </script>
 
