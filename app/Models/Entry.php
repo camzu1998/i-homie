@@ -5,18 +5,28 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Room extends Model
+class Entry extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
     protected $fillable = [
-        'name',
         'house_id',
-        'user_id'
+        'user_id',
+        'entriesable_id',
+        'entriesable_type',
+        'title',
+        'description',
+        'is_succeed',
+        'is_generated'
     ];
+
+    public function entriesable(): MorphTo
+    {
+        return $this->morphTo();
+    }
 
     public function house(): BelongsTo
     {
@@ -26,15 +36,5 @@ class Room extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
-    }
-
-    public function duties(): HasMany
-    {
-        return $this->hasMany(Duty::class);
-    }
-
-    public function entries(): MorphMany
-    {
-        return $this->morphMany(Entry::class, 'entriesable');
     }
 }

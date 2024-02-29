@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 
 class Duty extends Model
 {
@@ -37,4 +38,8 @@ class Duty extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function entries(): MorphMany
+    {
+        return $this->morphMany(Entry::class, 'entriesable');
+    }
 }
