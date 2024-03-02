@@ -96,7 +96,8 @@ class HouseController extends Controller
             "pickedHouse" => auth()->user()->picked_house_id,
             "duties" => auth()->user()->pickedHouse->duties()->with(['user', 'room'])->get(),
             "users" => $users,
-            'rooms' => auth()->user()->pickedHouse->rooms
+            'rooms' => auth()->user()->pickedHouse->rooms,
+            'entries' => auth()->user()->pickedHouse->entries
         ]);
     }
 }

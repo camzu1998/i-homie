@@ -6,6 +6,7 @@ import LoginForm from "./Components/Auth/LoginForm.vue";
 import Houses from "./Components/House/Houses.vue";
 import Rooms from "./Components/Room/Rooms.vue";
 import Duties from "./Components/Duty/Duties.vue";
+import Entries from "./Components/Entry/Entries.vue";
 
 export default [
     {
@@ -99,7 +100,7 @@ export default [
     {
         path: '/entries',
         components: {
-            default: Profile,
+            default: Entries,
             LeftSidebar,
         },
         name: 'Entries',

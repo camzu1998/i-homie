@@ -28,17 +28,14 @@ export default {
         onSubmit() {
             axios.post('/login', { email: this.email, password: this.password })
                 .then(response => {
-                    const user = response.data.user;
-                    const houses = response.data.houses;
-                    const pickedHouse = response.data.pickedHouse;
-
                     const options = {
-                        houses: houses,
-                        pickedHouse: pickedHouse,
+                        houses: response.data.houses,
+                        pickedHouse: response.data.pickedHouse,
                     }
 
-                    this.$store.commit('setUser', user);
+                    this.$store.commit('setUser', response.data.user);
                     this.$store.commit('setHouses', options);
+                    this.$store.commit('setEntries', response.data.entries);
                     this.$store.dispatch('persist');
                     this.$router.push('/');
                 })
