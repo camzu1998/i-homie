@@ -2,10 +2,11 @@
 
 namespace App\Policies;
 
-use App\Models\House;
+use App\Models\Entry;
 use App\Models\User;
+use Illuminate\Auth\Access\Response;
 
-class HousePolicy
+class EntryPolicy
 {
     /**
      * Determine whether the user can view any models.
@@ -18,9 +19,9 @@ class HousePolicy
     /**
      * Determine whether the user can view the model.
      */
-    public function view(User $user, House $house): bool
+    public function view(User $user, Entry $entry): bool
     {
-        return $house->users->contains($user);
+        return $entry->house->users->contains($user);
     }
 
     /**
@@ -34,24 +35,24 @@ class HousePolicy
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user, House $house): bool
+    public function update(User $user, Entry $entry): bool
     {
-        return $house->owner_id === $user->id;
+        return $entry->house->users->contains($user);
     }
 
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user, House $house): bool
+    public function delete(User $user, Entry $entry): bool
     {
-        return $house->owner_id === $user->id;
+        return $entry->user_id == $user->id;
     }
 
     /**
-     * Determine whether the user can assign model.
+     * Determine whether the user can restore the model.
      */
-    public function set(User $user, House $house): bool
+    public function restore(User $user, Entry $entry): bool
     {
-        return $house->users->contains($user);
+        return $entry->user_id == $user->id;
     }
 }

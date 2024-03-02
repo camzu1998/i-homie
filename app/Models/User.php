@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
@@ -54,7 +55,7 @@ class User extends Authenticatable
 
     public function houses(): BelongsToMany
     {
-        return $this->belongsToMany(House::class)->withPivot('status');
+        return $this->belongsToMany(House::class)->withPivot(['status', 'last_viewed_entry_id']);
     }
 
     public function rooms(): HasMany
@@ -70,5 +71,15 @@ class User extends Authenticatable
     public function duties(): HasMany
     {
         return $this->hasMany(Duty::class);
+    }
+
+    public function ownEntries(): HasMany
+    {
+        return $this->hasMany(Entry::class);
+    }
+
+    public function entries(): MorphMany
+    {
+        return $this->morphMany(Entry::class, 'entriesable');
     }
 }

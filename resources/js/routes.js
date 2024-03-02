@@ -6,6 +6,7 @@ import LoginForm from "./Components/Auth/LoginForm.vue";
 import Houses from "./Components/House/Houses.vue";
 import Rooms from "./Components/Room/Rooms.vue";
 import Duties from "./Components/Duty/Duties.vue";
+import Entries from "./Components/Entry/Entries.vue";
 
 export default [
     {
@@ -17,7 +18,8 @@ export default [
         name: 'Home',
         meta: {
             auth: true,
-            sidebar: false
+            sidebar: false,
+            icon: 'fa-solid fa-home'
         },
     },
     {
@@ -28,7 +30,8 @@ export default [
         name: 'Login',
         meta: {
             auth: false,
-            sidebar: false
+            sidebar: false,
+            icon: 'fa-solid fa-right-to-bracket'
         },
     },
     {
@@ -39,7 +42,8 @@ export default [
         name: 'Register',
         meta: {
             auth: false,
-            sidebar: false
+            sidebar: false,
+            icon: 'fa-solid fa-user-plus'
         },
     },
     {
@@ -96,7 +100,7 @@ export default [
     {
         path: '/entries',
         components: {
-            default: Profile,
+            default: Entries,
             LeftSidebar,
         },
         name: 'Entries',

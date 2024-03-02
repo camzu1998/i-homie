@@ -10,11 +10,6 @@ class HouseService
     private User $user;
     private House $house;
 
-    public function __construct()
-    {
-        $this->user = auth()->user();
-    }
-
     public function setHouse(House $house): self
     {
         $this->house = $house;
@@ -22,9 +17,9 @@ class HouseService
         return $this;
     }
 
-    public function setUser(User $user): self
+    public function setUser(User $user = null): self
     {
-        $this->user = $user;
+        $this->user = $user ?? auth()->user();
 
         return $this;
     }

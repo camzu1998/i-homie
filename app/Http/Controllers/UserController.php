@@ -13,4 +13,9 @@ class UserController extends Controller
         $user->update($request->validated());
         return response()->json(["user" => $user]);
     }
+
+    public function check()
+    {
+        return response()->json(["isLogged" => auth()->check()]);
+    }
 }

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DutyController;
+use App\Http\Controllers\EntryController;
 use App\Http\Controllers\HouseController;
 use App\Http\Controllers\RoomController;
 use App\Http\Controllers\UserController;
@@ -24,10 +25,13 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 Route::put('/users/{user}', [UserController::class, 'update'])->name('users.update');
 
 Route::prefix('api')->group(function () {
+    //User routes
+    Route::get('/user', [UserController::class, 'check'])->name('users.check');
     //House routes
     Route::get('/houses', [HouseController::class, 'index'])->name('houses.index');
     Route::post('/houses', [HouseController::class, 'store'])->name('houses.store');
     Route::get('/houses/{house}', [HouseController::class, 'show'])->name('houses.show');
+    Route::put('/houses/{house}/set', [HouseController::class, 'set'])->name('houses.set');
     Route::put('/houses/{house}', [HouseController::class, 'update'])->name('houses.update');
     Route::delete('/houses/{house}', [HouseController::class, 'destroy'])->name('houses.destroy');
 
@@ -44,6 +48,13 @@ Route::prefix('api')->group(function () {
     Route::get('/duties/{duty}', [DutyController::class, 'show'])->name('duties.show');
     Route::put('/duties/{duty}', [DutyController::class, 'update'])->name('duties.update');
     Route::delete('/duties/{duty}', [DutyController::class, 'destroy'])->name('duties.destroy');
+
+    //Entry routes
+    Route::get('/entries', [EntryController::class, 'index'])->name('entries.index');
+    Route::post('/entries', [EntryController::class, 'store'])->name('entries.store');
+    Route::get('/entries/{entry}', [EntryController::class, 'show'])->name('entries.show');
+    Route::put('/entries/{entry}', [EntryController::class, 'update'])->name('entries.update');
+    Route::delete('/entries/{entry}', [EntryController::class, 'destroy'])->name('entries.destroy');
 });
 
 //To prevent duplicating blank routes for vue.js, we can use this wildcard route
