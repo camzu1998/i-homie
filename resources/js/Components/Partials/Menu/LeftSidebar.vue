@@ -44,6 +44,7 @@ import {BFormSelect, BToast} from "bootstrap-vue-next";
                      );
                      this.$store.commit('setRooms', response.data.rooms);
                      this.$store.commit('setDuties', response.data.duties);
+                     this.$store.commit('setEntries', response.data.entries);
 
                  })
                  .catch(error => {

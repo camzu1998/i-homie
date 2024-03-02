@@ -25,7 +25,6 @@ class EntryRequest extends FormRequest
             'title' => ['required', 'string', 'max:255'],
             'description' => ['nullable', 'string', 'max:255'],
             'is_succeed' => ['nullable', 'boolean'],
-            'is_generated' => ['nullable', 'boolean'],
         ];
     }
 }
